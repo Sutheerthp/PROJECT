@@ -1,0 +1,160 @@
+{% extends 'SDMSapp/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ student.name }}'s Profile</title>
+    <style>
+
+        
+        .profile-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-height: calc(100vh - 60px); /* Adjust based on your header/footer heights */
+            overflow-y: auto; /* Enable vertical scrolling */
+            position: relative;
+            padding-bottom: 60px;
+        }
+        
+        .card-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .profile-details,.profile-contact {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .profile-item {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-label {
+            font-weight: bold;
+            color: #666;
+            text-align: right;
+            width: 150px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px 0;
+            background-color: #fff;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1; /* Adjust as necessary to avoid overlap with other elements */
+        }
+        
+        .action-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .action-buttons button:hover {
+            background-color: #ddd;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+
+        @media (max-width: 600px) {
+           .profile-details,.profile-contact {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>{{ student.name }}'s Profile</h1>
+        <div class="profile-item">
+            <span class="profile-label">Name:</span> {{ student.name }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">UTY Reg No:</span> {{ student.uty_reg_no }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">Year of Admission:</span> {{ student.year_of_admission }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">Gender:</span> {{ student.gender }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">Admission No:</span> {{ student.admission_no }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">Programme ID:</span> {{ student.programme_id }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">Place:</span> {{ student.place }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">Department:</span> {{ student.department }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">Phone Number:</span> {{ student.phone_number }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">Aadhar Number:</span> {{ student.aadhar_number }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">Date of Birth:</span> {{ student.dob }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">City:</span> {{ student.city }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">District:</span> {{ student.district }}
+        </div>
+        <div class="profile-item">
+            <span class="profile-label">Pincode:</span> {{ student.pincode }}
+        </div>
+
+        <h2>Sports Details</h2>
+        {% for year, items in sports_details.items %}
+        <div class="profile-item">
+            <h3>{{ year }}</h3>
+            <ul>
+                {% for item in items %}
+                <li>{{ item.item.item_name }} ({{ item.player_status }}, Position: {{ item.position }})</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+        
+        <div class="action-buttons">
+            <a href="{% url 'confirm_delete_student' student.uty_reg_no %}">
+                <button class="btn-danger" style="margin-right: 10px;">Delete</button>
+            </a>
+            <a href="{% url 'edit_student' student.uty_reg_no %}">
+                <button>Edit</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock content %}

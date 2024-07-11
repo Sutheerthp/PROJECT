@@ -1,0 +1,17 @@
+{% extends "SDMSapp/base.html" %}
+
+{% block title %}
+    Edit Certificate - Sports Details Management System
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Edit Certificate</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{% url 'certificate_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock content %}

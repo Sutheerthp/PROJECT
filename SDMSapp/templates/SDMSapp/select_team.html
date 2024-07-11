@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Team</title>
+</head>
+<body>
+    <h1>Select Team</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ team_form.as_p }}
+        <button type="submit">Select Team</button>
+    </form>
+</body>
+</html>

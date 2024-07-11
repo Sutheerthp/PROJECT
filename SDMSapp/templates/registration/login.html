@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        h1 {
+            text-align: center; /* Center the heading */
+            font-family: 'Arial', sans-serif; /* Clean and professional font */
+            color: #007bff; /* Bright blue color for visibility and attractiveness */
+            font-size: 36px; /* Large size for impact */
+            margin-top: 50px; /* Space above the heading */
+            margin-bottom: 30px; /* Space below the heading */
+            text-shadow: 2px 2px 4px rgba(0, 0, 255, 0.5); /* Subtle shadow for depth */
+            letter-spacing: 1px; /* Adds character to the text */
+        }
+        body {
+            background-image: url("{% static 'media/team_pictures/imglog1.png' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #333; /* Ensuring text is readable against the background */
+        }
+        
+        .login-container {
+            max-width: 450px;
+            margin: 150px auto; /* Adjusted margin for better positioning */
+            background-color: #f0f8ff; /* Lighter shade of blue */
+            padding: 40px; /* Increased padding for spacious design */
+            border-radius: 10px; /* Rounded corners for softer edges */
+            box-shadow: 0px 0px 15px rgba(0, 0, 255, 0.1); /* Soft shadow for depth */
+        }
+        
+        h2 {
+            text-align: center;
+            color: #007bff; /* Bright blue for headings */
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333; /* Ensuring readability */
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px; /* More padding for comfort */
+            margin-bottom: 16px; /* Spacing between inputs */
+            border: 1px solid #ddd; /* Slightly lighter border */
+            border-radius: 5px; /* Softer corners */
+            box-sizing: border-box;
+            background-color: #e6f2ff; /* Light blue background for inputs */
+            color: #333; /* Ensuring text is readable */
+        }
+        
+        button {
+            background-color: #007bff; /* Strong blue for action buttons */
+            color: white;
+            cursor: pointer;
+            border: none;
+            padding: 14px 20px; /* Larger padding for easier clicking */
+            border-radius: 5px; /* Matching rounded corners */
+            width: 100%; /* Full width for consistency */
+        }
+        
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover for feedback */
+        }
+        
+        .error-message {
+            color: #dc3545; /* Red for errors, contrasting well with the blue theme */
+            margin-bottom: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Sports Details Management System</h1>
+        <h2>Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% if error %}
+                <p class="error-message">{{ error }}</p>
+            {% endif %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

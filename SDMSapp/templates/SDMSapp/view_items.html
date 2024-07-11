@@ -1,0 +1,156 @@
+{% extends 'SDMSapp/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Items</title>
+    <style>
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .search-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .search-input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 80%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border: 1px solid #3498db;
+        }
+
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #555;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #2980b9;
+        }
+
+        button {
+            padding: 8px 12px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .footer-spacing {
+            margin-top: 90px;
+        }
+
+        select {
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>All Items</h1>
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by item name..." onkeyup="searchTable()">
+    </div>
+    <table id="itemsTable">
+        <tr>
+            <th>Item Name</th>
+            <th>Year</th>
+            <th>Gender</th>
+            <th>Action</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.item_name }}</td>
+            <td>
+                <form action="{% url 'view_players' item.id %}" method="get">
+                    <select name="year">
+                        {% for year in years %}
+                            <option value="{{ year }}" {% if year == request.GET.year %} selected {% endif %}>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+            </td>
+            <td>
+                <select name="gender">
+                    <option value="">All</option>
+                    <option value="Male" {% if 'gender' in request.GET and request.GET.gender == 'Male' %} selected {% endif %}>Male</option>
+                    <option value="Female" {% if 'gender' in request.GET and request.GET.gender == 'Female' %} selected {% endif %}>Female</option>
+                </select>
+            </td>
+            <td>
+                <input type="hidden" name="item_id" value="{{ item.id }}">
+                <button type="submit">View Team</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="footer-spacing"></div>
+
+    <script>
+        function searchTable() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toLowerCase();
+            table = document.getElementById("itemsTable");
+            tr = table.getElementsByTagName("tr");
+            
+            for (i = 1; i < tr.length; i++) {  // Start from 1 to skip table header
+                td = tr[i].getElementsByTagName("td")[0];  // Get the first column which has the Item Name
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+{% endblock content %}

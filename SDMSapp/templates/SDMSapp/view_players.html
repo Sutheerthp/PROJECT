@@ -1,0 +1,172 @@
+{% extends 'SDMSapp/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Team Members of {{ year }} for {{ item.item_name }}</title>
+    <style>
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        
+        /* Table styles */
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #555;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        td {
+            color: #555;
+        }
+        
+        /* Link styles */
+        a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        a:hover {
+            color: #2980b9;
+        }
+        
+        /* Button styles */
+        button {
+            padding: 8px 12px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Search styles */
+        .search-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Team Members{{ year }} for {{ item.item_name }}</h1>
+    <p>Selected Gender: {% if selected_gender %}{{ selected_gender }}{% else %}All{% endif %}</p>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search by student name" onkeyup="searchTable()">
+    </div>
+    <table id="membersTable">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Player Status</th>
+                <th>UTY Team Selection</th>
+                <th>Position</th>
+                <th>Year</th>
+                <th>Grace Mark Percentage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stud_item in stud_items %}
+                <tr>
+                    <td>{{ stud_item.stud.name }}<a href="{% url 'view_profile' stud_item.stud.uty_reg_no %}"><br>View</a></td>
+                    <td>{{ stud_item.player_status }}</td>
+                    <td>{{ stud_item.uty_team_selection }}</td>
+                    <td>{{ stud_item.position }}</td>
+                    <td>{{ stud_item.year }}</td>
+                    <td>
+                        {% if stud_item.uty_team_selection and stud_item.position %}
+                            <script>
+                                function calculateGraceMark(teamSelection, position) {
+                                    let graceMarks = 0;
+                                    // Define grace marks mappings based on team selection and position
+                                    const graceMarksMap = {
+                                        'Selected': {
+                                            'default': 7,
+                                            '3': 8,
+                                            '2': 9,
+                                            '1': 10
+                                        },
+                                        'Not Selected': {
+                                            '1': 6,
+                                            '2': 5,
+                                            '3': 4,
+                                            'default': 0
+                                        }
+                                    };
+
+                                    // Check if the team selection and position exist in the map
+                                    if (teamSelection in graceMarksMap) {
+                                        graceMarks = graceMarksMap[teamSelection][position] || graceMarksMap[teamSelection]['default'];
+                                    }
+
+                                    return graceMarks;
+                                }
+
+                                document.write(calculateGraceMark('{{ stud_item.uty_team_selection }}', '{{ stud_item.position }}') + '%');
+                            </script>
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function searchTable() {
+            let input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("membersTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = "none";
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+{% endblock content %}

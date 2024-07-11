@@ -1,0 +1,69 @@
+{% extends 'SDMSapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    .profile-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 20px;
+        text-align: center;
+    }
+    .profile-image img {
+        width: 200px;   
+        height: 200px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 20px;
+    }
+    .profile-info h2 {
+        margin: 0 0 10px;
+        font-size: 2rem;
+        color: #333;
+    }
+    .profile-info h3 {
+        margin: 0 0 20px;
+        font-size: 1.2rem;
+        color: #777;
+    }
+    .profile-info p {
+        font-size: 1rem;
+        color: #666;
+        margin: 0 0 20px;
+    }
+    .contact-info p {
+        margin: 0;
+        font-size: 1rem;
+        color: #555;
+    }
+    .contact-info p strong {
+        color: #333;
+    }
+</style>
+<div class="container">
+    <div class="profile-card">
+        <div class="profile-image">
+            <img src="{% static 'media/team_pictures/phyhod.jpeg' %}" alt="Head of Department">
+        </div>
+        <div class="profile-info">
+            <h2>Sudheesh M K</h2>
+            <h3>Head of the Department,Assistant Professor & In-Charge</h3>
+            <p>Sudheesh M K has been leading the Physical Education Department with dedication and passion. With over 20 years of experience in the field, Mr Sudheesh  has significantly contributed to the development of sports programs and facilities in the institution. He is committed to promoting physical well-being and fostering a culture of sportsmanship among students.</p>
+            <div class="contact-info">
+                <p><strong>Email:</strong> sudheeshmks68@gmail.com</p>
+                <p><strong>Phone:</strong> +91-9539724293</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+
+{% extends "SDMSapp/base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Assignments</title>
+    <style>
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:nth-child(odd) {
+            background-color: #fff;
+        }
+        .search-container {
+            text-align: center;
+            margin: 20px;
+        }
+        .search-container input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+        }
+        .search-container button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .search-container button:hover {
+            background-color: #007bff;
+        }
+        .footer-spacing {
+            margin-top: 90px; /* Adds space between the table and footer */
+        }
+    </style>
+</head>
+<body>
+    <h1>Assigned Student list</h1>
+    <div class="search-container">
+        <form method="get">
+            <input type="text" name="q" placeholder="Search by student name..." value="{{ query }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <table>
+        <tr>
+            <th>slno</th>
+            <th>Student</th>
+            <th>UTY REGNO</th>
+            <th>Item</th>
+            <th>Gender</th>
+            <th>Player Status</th>
+            <th>Team Selection</th>
+            <th>Position</th>
+            <th>Year</th>
+            <th>Action</th>
+        </tr>
+        {% for assignment in assignments %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ assignment.stud.name }}</td>
+            <td>{{ assignment.stud.uty_reg_no }}</td>
+            <td>{{ assignment.item.item_name }}</td>
+            <td>{{ assignment.gender }}</td>
+            <td>{{ assignment.player_status }}</td>
+            <td>{{ assignment.uty_team_selection }}</td>
+            <td>{{ assignment.position }}</td>
+            <td>{{ assignment.year }}</td>
+            <td>
+                <a style='margin-right:16px' href="{% url 'confirm_assign_delete' assignment.id %}">
+                    <button>Delete</button>
+                </a>
+                <a style='margin-right:16px' href="{% url 'edit_assignment' assignment.id %}">
+                    <button>Edit</button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="footer-spacing"></div>
+</body>
+</html>
+{% endblock content %}

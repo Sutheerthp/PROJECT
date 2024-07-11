@@ -1,0 +1,174 @@
+{% extends 'SDMSapp/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Students to Item</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+            padding-top: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"], select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"], button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .checkbox-list label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .submit-button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            float: right;
+        }
+        .submit-button:hover {
+            background-color: #218838;
+        }
+        .table-container {
+            margin-top: 20px;
+        }
+
+        select {
+            max-height: 200px; /* Set a maximum height for the dropdown */
+            overflow-y: auto;  /* Enable vertical scrolling */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .footer-spacing {
+            margin-top: 90px; /* Adds space between the table and footer */
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Assign Students to Item</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <p>
+                {{ form.item.label_tag }}<br>
+                {{ form.item }}
+            </p>
+            <p>
+                {{ form.gender.label_tag }}<br>
+                {{ form.gender }}
+            </p>
+            <p>
+                {{ form.year.label_tag }}<br>
+                {{ form.year }}
+            </p>
+            <p>
+                {{ form.uty_team_selection.label_tag }}<br>
+                {{ form.uty_team_selection }}
+            </p>
+            <p>
+                {{ form.player_status.label_tag }}<br>
+                {{ form.player_status }}
+            </p>
+            <p>
+                {{ form.position.label_tag }}<br>
+                {{ form.position }}
+            </p>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search by student name, UTY Reg No, or department..." onkeyup="searchStudents()">
+            </div>
+            <div class="checkbox-list">
+                <table class="checkbox-table" id="studentsTable">
+                    <thead>
+                        <tr>
+                            <th>Check</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in form.students %}
+                        <tr>
+                            <td>
+                                {{ student.tag }}
+                            </td>
+                            <td>{{ student.choice_label }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <button type="submit">Assign</button>
+        </form>
+    </div>
+    
+    <script>
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                const context = this;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), wait);
+            };
+        }
+    
+        function searchStudents() {
+            const input = document.getElementById("searchInput").value.toLowerCase();
+            const checkboxes = document.querySelectorAll(".checkbox-list .checkbox-table tbody tr");
+    
+            checkboxes.forEach((checkbox) => {
+                const text = checkbox.innerText.toLowerCase();
+                if (text.includes(input)) {
+                    checkbox.style.display = "";
+                } else {
+                    checkbox.style.display = "none";
+                }
+            });
+        }
+    
+        const debouncedSearchStudents = debounce(searchStudents, 300);
+    
+        // Attach the debounced function to the input event
+        document.getElementById("searchInput").addEventListener("input", debouncedSearchStudents);
+    </script>
+    <div class="footer-spacing"></div>
+</body>
+</html>
+{% endblock content %}

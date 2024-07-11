@@ -1,0 +1,81 @@
+{% extends 'SDMSapp/base.html' %}
+
+{% block title %}
+    View Pictures - Sports Details Management System
+{% endblock title %}
+
+{% block content %}
+<style>
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: box-shadow 0.3s ease;
+        height: 100%;
+    }
+
+    .card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: auto; /* Adjust the height of the image */
+        object-fit: cover; /* Ensure images maintain aspect ratio and cover the entire card */
+    }
+
+    .card-body {
+        padding: 5.25rem;
+    }
+
+    .card-text {
+        margin-bottom: 0.75rem;
+    }
+
+    .btn-success,
+    .btn-info {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    /* Space between cards */
+    .mb-4 {
+        margin-bottom: 1.5rem; /* Adjust as needed for spacing between cards */
+    }
+</style>
+<div class="container mt-4">
+    <h1 class="text-center mb-4">View Pictures</h1>
+    <form method="get" class="form-inline mb-4 justify-content-center">
+        <label for="item" class="mr-2">Item:</label>
+        <select name="item" id="item" class="form-control mr-2">
+            {% for item in items %}
+                <option value="{{ item.id }}">{{ item.item_name }}</option>
+            {% endfor %}
+        </select>
+        <label for="year" class="mr-2">Year:</label>
+        <input type="number" name="year" id="year" class="form-control mr-2" value="">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+
+    {% if pictures %}
+        <div class="row">
+            {% for picture in pictures %}
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="card shadow-sm">
+                        <img src="{{ picture.image.url }}" class="card-img-top" alt="Picture">
+                        <div class="card-body">
+                            <p class="card-text">{{ picture.description }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{{ picture.image.url }}" download class="btn btn-success">Download</a>
+                                <a href="{% url 'view_players' picture.item.id %}" class="btn btn-info">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">No pictures available for the selected item and year.</p>
+    {% endif %}
+</div>
+{% endblock content %}

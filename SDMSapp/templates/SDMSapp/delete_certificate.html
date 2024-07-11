@@ -1,0 +1,17 @@
+{% extends "SDMSapp/base.html" %}
+
+{% block title %}
+    Confirm Delete Certificate - Sports Details Management System
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Confirm Delete Certificate</h1>
+    <p>Are you sure you want to delete the certificate for {{ certificate.student.name }} - {{ certificate.item.item_name }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'certificate_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock content %}

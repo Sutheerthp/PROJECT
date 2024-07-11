@@ -306,12 +306,20 @@ def upload_picture(request):
 def view_pictures(request):
     items = Item.objects.all()
     pictures = []
+    selected_year = None
     current_year = datetime.now().year
+
     if 'item' in request.GET and 'year' in request.GET:
         item_id = request.GET.get('item')
-        year = request.GET.get('year')
-        pictures = Picture.objects.filter(item_id=item_id, year=year)
-    return render(request, 'SDMSapp/view_picture.html', {'items': items, 'pictures': pictures, 'current_year': current_year})
+        selected_year = request.GET.get('year')
+        pictures = Picture.objects.filter(item_id=item_id, year=selected_year)
+
+    return render(request, 'SDMSapp/view_picture.html', {
+        'items': items,
+        'pictures': pictures,
+        'selected_year': selected_year,
+        'current_year': current_year,
+    })
 
 def download_picture(request, picture_id):
     picture = get_object_or_404(Picture, pk=picture_id)
@@ -453,22 +461,8 @@ def calculate_grace_mark(team_selection, position):
 
     return 0
 
-def get_student_details(request):
-    student_id = request.GET.get('student_id', None)
-    data = {}
-
-    if student_id:
-        try:
-            student = Student.objects.get(id=student_id)
-            data['year'] = student.year
-            data['programme_id'] = student.programme_id.id  # Assuming you want the ID
-            data['department'] = student.department.name  # Assuming you want the department name
-
-            # Fetch items assigned to this student
-            items = Item.objects.filter(student=student)
-            data['items'] = list(items.values('id', 'item_name'))
-
-        except Student.DoesNotExist:
-            data['error'] = 'Student not found'
-
-    return JsonResponse(data)
+def delete_picture(request, pk):
+    picture = get_object_or_404(Picture, pk=pk)
+    picture.delete()
+    messages.success(request, 'Picture deleted successfully.')
+    return redirect('view_pictures')
